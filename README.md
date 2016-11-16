@@ -1,2 +1,2 @@
 # facebook-live-video
-Scrape a website or other source and stream it as a Facebook Live Video to any User Timeline.
+Stream a website with phantomjs to Facebook Live via ffmpeg (video) and collect Facebook reactions
