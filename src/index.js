@@ -60,6 +60,7 @@ function start() {
       streamProcess = exec(cmd, (error, stdout, stderr) => {
         // command output is in stdout
         console.log({ error, stderr });
+        if (error) throw error;
       });
     })
     .catch((error) => {
