@@ -93,7 +93,7 @@ npm start [accessToken] [debug]
 ```
 It will increase the numbers every 2 sec by a random number.
 
-# /src/fb.js
+# FB API wrapper - /src/fb.js
 
 I build a little wrapper for the FB API in `/src/fb.js` which is also available from the cli.
 ```
