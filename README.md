@@ -10,6 +10,8 @@ https://developers.facebook.com/docs/videos/live-video
 API Doc:
 https://developers.facebook.com/docs/graph-api/reference/live-video/#Overview
 
+## If you need help with the setup or if you want to use it for _commercial_ please text me office@pholly.at
+
 # Installation
 
 I installed everything on Ubuntu 16.04, for other versions check docs how to install.
