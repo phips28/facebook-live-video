@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Swell</title>
+    <style>
+        html {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: url("background.svg") repeat-x #00cdb7;
+            background-position: 0 -50px;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+            width: 100%;
+            height: 100%;
+            /*background: rgba(0, 0, 0, 0.3)*/
+        }
+
+        header {
+            text-align: right;
+        }
+
+        header .logo {
+            position: relative;
+            margin: 50px;
+            height: 44px;
+        }
+
+        footer {
+            clear: both;
+            text-align: center;
+        }
+
+        #error {
+            color: #fff;
+            font-size: 30px;
+            display: none;
+            background: #ff0000;
+            padding: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            width: 100%;
+            font-size: 50px;
+            padding: 30px 0;
+            margin: 0;
+            color: #fff;
+        }
+
+        #wrap {
+            position: relative;
+            margin: 0px auto;
+            width: 1280px;
+            height: 720px;
+        }
+
+        .tc {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .wf {
+            width: 28%;
+        }
+
+        .wf img.illu {
+            width: 80%;
+            display: block;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .wf img.emoji {
+            width: 34px;
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .wf {
+            width: 29.3%;
+            float: left;
+            margin: 30px 2%;
+            border: solid 1px #eee;
+            background: #fff;
+            border-radius: 8px;
+            position: relative;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img class="logo" src="swell_logo_small.png">
+    <h1>Whats your favorite reaction?</h1>
+</header>
+<!-- REACTIONS -->
+<div class="tc wf like"><img class="emoji" src="emojis/like.png"><span class="counter">0</span></div>
+<div class="tc wf love"><img class="emoji" src="emojis/love.png"><span class="counter">0</span></div>
+<div class="tc wf sad"><img class="emoji" src="emojis/sad.png"><span class="counter">0</span></div>
+<div class="tc wf haha"><img class="emoji" src="emojis/haha.png"><span class="counter">0</span></div>
+<div class="tc wf angry"><img class="emoji" src="emojis/angry.png"><span class="counter">0</span></div>
+<div class="tc wf shock"><img class="emoji" src="emojis/shock.png"><span class="counter">0</span></div>
+
+<footer>
+    <p id="error">test</p>
+</footer>
+<script src="jquery.min.js"></script>
+<script src="lodash.min.js"></script>
+<script>
+    'use strict';
+    function getParameterByName(name, url) {
+        if (!url) {
+            url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    var accessToken = getParameterByName('accessToken');
+    var postId = getParameterByName('postId');
+    var debug = getParameterByName('debug') === 'true';
+    var refreshTime = 2; // Refresh time in seconds
+    var defaultCount = 0; // Default count to start with
+
+    var reactions = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'].map(function (e) {
+        var code = 'reactions_' + e.toLowerCase();
+        return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+    }).join(',');
+
+    var v1 = $('.like .counter'),
+            v2 = $('.love .counter'),
+            v3 = $('.sad .counter'),
+            v4 = $('.haha .counter'),
+            v5 = $('.angry .counter'),
+            v6 = $('.shock .counter');
+
+    function refreshCounts() {
+        if (debug) {
+            v1.text(Number(v1.text()) + Math.floor(Math.random() * 10));
+            v2.text(Number(v2.text()) + Math.floor(Math.random() * 10));
+            v3.text(Number(v3.text()) + Math.floor(Math.random() * 10));
+            v4.text(Number(v4.text()) + Math.floor(Math.random() * 10));
+            v5.text(Number(v5.text()) + Math.floor(Math.random() * 10));
+            v6.text(Number(v6.text()) + Math.floor(Math.random() * 10));
+        } else {
+            var url = 'https://graph.facebook.com/v2.8/?ids=' + postId + '&fields=' + reactions + '&access_token=' + accessToken;
+            console.log(url);
+            $.getJSON(url, function (res) {
+                v1.text(defaultCount + res[postId].reactions_like.summary.total_count || 0);
+                v2.text(defaultCount + res[postId].reactions_love.summary.total_count || 0);
+                v3.text(defaultCount + res[postId].reactions_sad.summary.total_count || 0);
+                v4.text(defaultCount + res[postId].reactions_haha.summary.total_count || 0);
+                v5.text(defaultCount + res[postId].reactions_angry.summary.total_count || 0);
+                v6.text(defaultCount + res[postId].reactions_wow.summary.total_count || 0);
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        if (accessToken && postId) {
+            setInterval(refreshCounts, refreshTime * 1000);
+            refreshCounts();
+        } else {
+            $('#error').text('AccessToken or PostId not set! check your query params').show();
+        }
+    });
+</script>
+</body>
+</html>
