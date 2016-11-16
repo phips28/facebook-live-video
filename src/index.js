@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * usage: npm start [accessToken] [debug]
+ * usage: npm start [accessToken] [debug] [privacy]
  */
 
 var fb = require('./fb');
@@ -15,7 +15,8 @@ if (parameter.length < 1) {
 }
 
 var accessToken = parameter[0];
-var debug = parameter[1];
+var debug = parameter[1] === 'true';
+var privacy = parameter[2];
 
 var postId;
 var streamProcess;
@@ -27,12 +28,13 @@ function start() {
   // privacy:
   // https://developers.facebook.com/docs/graph-api/reference/v2.8/post
   // 10211042370397464?privacy={'value':'EVERYONE'}
+  var privacys = { public: "{'value':'EVERYONE'}", friends: "{'value':'FRIENDS'}" };
   fb.startLiveVideo({
     accessToken,
-    title: 'First test video - ' + new Date(),
+    title: 'Live Video',
     // privacy: "{'value':'EVERYONE'}"
     // privacy: "{'value':'FRIENDS'}"
-    privacy: "{'value':'CUSTOM',allow:'100009508046151,1751806573'}",
+    privacy: privacys[privacy] || "{'value':'CUSTOM',allow:'100009508046151,1751806573'}",
   })
     .then((liveVideo) => {
       console.log(liveVideo);
@@ -41,7 +43,7 @@ function start() {
       postId = liveVideo.id;
 
       // var url = 'http://localhost/dvel/dvel-livestream/website/index.html?debug=true&accessToken=' + accessToken + '&postId=' + postId;
-      var url = 'file://' + __dirname + '/../website/index.html?debug=' + !!debug + '&accessToken=' + accessToken + '&postId=' + postId;
+      var url = 'file://' + __dirname + '/../website/index.html?debug=' + debug + '&accessToken=' + accessToken + '&postId=' + postId;
       var fps = 10; // must be the same as in scraper.js
       var cmd;
       // write to file:

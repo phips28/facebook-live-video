@@ -48,7 +48,7 @@ rm -R phantomjs-2.1.1-linux-x86_64
    Important: User needs `publish_actions` permission
 1. Go to your cli and type in:
 ```
-npm start [accessToken]
+npm start [accessToken] [debug] [privacy]
 ```
 
 It creates a Live Video (via FB API) and streams the index.html inside the /website folder.
@@ -72,6 +72,12 @@ modify the options object to configure your stream
 see: https://developers.facebook.com/docs/graph-api/reference/live-video/#Overview
 for possible parameters.
 
+**Privacy** parameter:
+```
+npm start [accessToken] false public
+npm start [accessToken] false friends
+```
+Customize your own settings.
 You can find `privacy` settings here: (search for privacy)
 https://developers.facebook.com/docs/graph-api/reference/v2.8/post
 
@@ -92,6 +98,13 @@ npm start [accessToken] [debug]
 => npm start [accessToken] true
 ```
 It will increase the numbers every 2 sec by a random number.
+
+---
+
+If your phantomjs script stuck use to kill every process:
+```
+pkill -f  phantomjs
+```
 
 # FB API wrapper - /src/fb.js
 
