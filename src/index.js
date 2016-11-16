@@ -28,7 +28,11 @@ function start() {
   // privacy:
   // https://developers.facebook.com/docs/graph-api/reference/v2.8/post
   // 10211042370397464?privacy={'value':'EVERYONE'}
-  var privacys = { public: "{'value':'EVERYONE'}", friends: "{'value':'ALL_FRIENDS'}", friends_of_friends: "{'value':'FRIENDS_OF_FRIENDS'}" };
+  var privacys = {
+    public: "{'value':'EVERYONE'}",
+    friends: "{'value':'ALL_FRIENDS'}",
+    friends_of_friends: "{'value':'FRIENDS_OF_FRIENDS'}"
+  };
   fb.startLiveVideo({
     accessToken,
     title: 'Live Video',
@@ -42,21 +46,20 @@ function start() {
       var rtmpUrl = liveVideo.stream_url;
       postId = liveVideo.id;
 
-      // var url = 'http://localhost/dvel/dvel-livestream/website/index.html?debug=true&accessToken=' + accessToken + '&postId=' + postId;
       var url = 'file://' + __dirname + '/../website/index.html?debug=' + debug + '&accessToken=' + accessToken + '&postId=' + postId;
       var fps = 10; // must be the same as in scraper.js
       var cmd;
       // write to file:
-      // cmd = 'phantomjs ' + __dirname + '/scraper.js "http://lmgtfy.com/?q=test" | ffmpeg -y -c:v png -f image2pipe -r ' + rate + ' -t 10 -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart result/html.mp4 >> stream.log 2>&1';
-      // cmd = 'phantomjs ' + __dirname + '/scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + rate + ' -t 10 -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart result/html.mp4 >> stream.log 2>&1';
+      // cmd = 'phantomjs ' + __dirname + '/scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + fps + ' -t 10 -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart result/html.mp4 >> stream.log 2>&1';
+      // cmd = 'phantomjs ' + __dirname + '/scraper.js "http://lmgtfy.com/?q=test" | ffmpeg -y -c:v png -f image2pipe -r ' + fps + ' -t 10 -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart result/html.mp4 >> stream.log 2>&1';
 
       // stream to facebook; -s size should be the same as in scraper.js
       cmd = 'phantomjs ' + __dirname + '/scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + fps + ' -i - -c:v libx264 -s 1280x720 -pix_fmt yuv420p -f flv "' + rtmpUrl + '" >> stream.log 2>&1';
       // ^^^^
       // worse tests:
-      // cmd = 'phantomjs scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + rate + ' -i - -c:v libx264 -profile:v baseline -maxrate 200000 -bufsize 200000 -level 3.1 -pix_fmt yuv420p -f flv "' + rtmpUrl + '" >> stream.log 2>&1';
-      // cmd = 'phantomjs scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + rate + ' -i - -c:v libx264 -pix_fmt yuv420p -f flv "' + rtmpUrl + '" >> stream.log 2>&1';
-      // cmd = 'phantomjs ' + __dirname + '/scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + rate + ' -i - -c:v libx264 -s 960x540 -pix_fmt yuv420p -f flv "' + rtmpUrl + '" >> stream.log 2>&1';
+      // cmd = 'phantomjs scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + fps + ' -i - -c:v libx264 -profile:v baseline -maxfps 200000 -bufsize 200000 -level 3.1 -pix_fmt yuv420p -f flv "' + rtmpUrl + '" >> stream.log 2>&1';
+      // cmd = 'phantomjs scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + fps + ' -i - -c:v libx264 -pix_fmt yuv420p -f flv "' + rtmpUrl + '" >> stream.log 2>&1';
+      // cmd = 'phantomjs ' + __dirname + '/scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + fps + ' -i - -c:v libx264 -s 960x540 -pix_fmt yuv420p -f flv "' + rtmpUrl + '" >> stream.log 2>&1';
 
       console.log('\n');
       console.log('cmd:', cmd);

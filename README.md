@@ -130,3 +130,6 @@ Please help me to improve this toolset for Facebook Live Videos.
 Feedback and PR's are very welcome! :)
 
 # Happy hacking ;)
+
+
+Hey again Live Video 😎- yesterday I received a lot of messages how I stream the video and collect the reactions. It was a little bit hacky yesterday
