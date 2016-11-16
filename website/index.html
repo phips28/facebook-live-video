@@ -165,7 +165,6 @@
                     + '&fields=' + reactions
                     + '&access_token=' + accessToken;
             $.getJSON(url, function (res) {
-                console.log('here');
                 if (res[postId]) {
                     v1.text(defaultCount + res[postId].reactions_like.summary.total_count || 0);
                     v2.text(defaultCount + res[postId].reactions_love.summary.total_count || 0);
