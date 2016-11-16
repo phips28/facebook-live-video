@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * usage: npm start [accessToken] [debug]
+ */
+
 var fb = require('./fb');
 var exec = require('child_process').exec;
 
