@@ -162,7 +162,6 @@
                     + '?fields=' + reactions
                     + '&access_token=' + accessToken;
             apiCall(url, function (res) {
-                console.log(res);
                 if (res.reactions_like) {
                     v1.innerHTML = defaultCount + res.reactions_like.summary.total_count;
                     v2.innerHTML = defaultCount + res.reactions_love.summary.total_count;
@@ -183,7 +182,6 @@
 
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-                console.log(xmlhttp.responseText);
                 if (xmlhttp.status == 200) {
                     callback(JSON.parse(xmlhttp.responseText));
                 }
