@@ -161,17 +161,18 @@
             var url = 'https://graph.facebook.com/v2.8/' + postId
                     + '?fields=' + reactions
                     + '&access_token=' + accessToken;
+            console.log(url);
             apiCall(url, function (res) {
-                if (res.reactions_like) {
+                if (res.error) {
+                    error.innerHTML = res.error.message;
+                    error.style.display = 'block';
+                } else {
                     v1.innerHTML = defaultCount + res.reactions_like.summary.total_count;
                     v2.innerHTML = defaultCount + res.reactions_love.summary.total_count;
                     v3.innerHTML = defaultCount + res.reactions_sad.summary.total_count;
                     v4.innerHTML = defaultCount + res.reactions_haha.summary.total_count;
                     v5.innerHTML = defaultCount + res.reactions_angry.summary.total_count;
                     v6.innerHTML = defaultCount + res.reactions_wow.summary.total_count;
-                } else {
-//                    error.innerHTML = 'AccessToken or PostId (' + postId + ') not set! check your query params';
-//                    error.style.display = 'block';
                 }
             })
         }
@@ -182,16 +183,17 @@
 
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+                var res = JSON.parse(xmlhttp.responseText);
                 if (xmlhttp.status == 200) {
-                    callback(JSON.parse(xmlhttp.responseText));
+                    callback(res);
                 }
                 else if (xmlhttp.status == 400) {
-                    console.log('There was an error 400', xmlhttp.responseText);
-                    callback({});
+                    console.log('There was an error 400', res);
+                    callback(res);
                 }
                 else {
-                    console.log('something else other than 200 was returned', xmlhttp.responseText);
-                    callback({});
+                    console.log('something else other than 200 was returned', res);
+                    callback(res);
                 }
             }
         };
