@@ -78,6 +78,7 @@ https://developers.facebook.com/docs/graph-api/reference/v2.8/post
 ---
 
 Modify the files in `/website` how you like. You can also stream another website by changing the `url` in the `index.js` file
+
 # Debug
 
 If you have problems with your installation, check the stream.log:
@@ -91,5 +92,27 @@ npm start [accessToken] [debug]
 => npm start [accessToken] true
 ```
 It will increase the numbers every 2 sec by a random number.
+
+# /src/fb.js
+
+I build a little wrapper for the FB API in `/src/fb.js` which is also available from the cli.
+```
+node src/fb.js [accessToken] [action] [postId]
+node src/fb.js [accessToken] get 1234
+node src/fb.js [accessToken] end 1234
+node src/fb.js [accessToken] delete 1234
+node src/fb.js [accessToken] get_all
+# CAREFUL: deletes all videos! Only do this on a testaccount. I am not resposible for your deleted videos! # node src/fb.js [accessToken] delete_all
+```
+
+# Todo
+
+- [ ] configure streaming video with cli params, e.g. stringified JSON
+- [ ] optimize quality (ffmpeg)
+
+# Contribution
+
+Please help me to improve this toolset for Facebook Live Videos. 
+Feedback and PR's are very welcome! :)
 
 # Happy hacking ;)
