@@ -166,12 +166,12 @@
                     + '&access_token=' + accessToken;
             $.getJSON(url, function (res) {
                 if (res[postId]) {
-                    v1.text(defaultCount + res[postId].reactions_like.summary.total_count || 0);
-                    v2.text(defaultCount + res[postId].reactions_love.summary.total_count || 0);
-                    v3.text(defaultCount + res[postId].reactions_sad.summary.total_count || 0);
-                    v4.text(defaultCount + res[postId].reactions_haha.summary.total_count || 0);
-                    v5.text(defaultCount + res[postId].reactions_angry.summary.total_count || 0);
-                    v6.text(defaultCount + res[postId].reactions_wow.summary.total_count || 0);
+                    v1.text(defaultCount + res[postId].reactions_like.summary.total_count);
+                    v2.text(defaultCount + res[postId].reactions_love.summary.total_count);
+                    v3.text(defaultCount + res[postId].reactions_sad.summary.total_count);
+                    v4.text(defaultCount + res[postId].reactions_haha.summary.total_count);
+                    v5.text(defaultCount + res[postId].reactions_angry.summary.total_count);
+                    v6.text(defaultCount + res[postId].reactions_wow.summary.total_count);
                 } else {
                     $('#error').text('AccessToken or PostId (' + postId + ') not set! check your query params').show();
                 }
