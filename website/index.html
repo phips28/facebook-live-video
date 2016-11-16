@@ -161,7 +161,6 @@
             var url = 'https://graph.facebook.com/v2.8/' + postId
                     + '?fields=' + reactions
                     + '&access_token=' + accessToken;
-            console.log(url);
             apiCall(url, function (res) {
                 if (res.error) {
                     error.innerHTML = res.error.message;
@@ -174,16 +173,19 @@
                     v5.innerHTML = defaultCount + res.reactions_angry.summary.total_count;
                     v6.innerHTML = defaultCount + res.reactions_wow.summary.total_count;
                 }
-            })
+            });
         }
     }
 
     function apiCall(url, callback) {
         var xmlhttp = new XMLHttpRequest();
-
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-                var res = JSON.parse(xmlhttp.responseText);
+                try {
+                    var res = JSON.parse(xmlhttp.responseText);
+                } catch (error) {
+
+                }
                 if (xmlhttp.status == 200) {
                     callback(res);
                 }
@@ -197,9 +199,9 @@
                 }
             }
         };
-
         xmlhttp.open('GET', url, true);
         xmlhttp.send();
+
     }
 
     function onReady() {

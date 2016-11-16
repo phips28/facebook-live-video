@@ -54,7 +54,7 @@ function start() {
       // cmd = 'phantomjs ' + __dirname + '/scraper.js "http://lmgtfy.com/?q=test" | ffmpeg -y -c:v png -f image2pipe -r ' + fps + ' -t 10 -i - -c:v libx264 -pix_fmt yuv420p -movflags +faststart result/html.mp4 >> stream.log 2>&1';
 
       // stream to facebook; -s size should be the same as in scraper.js
-      cmd = 'phantomjs ' + __dirname + '/scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + fps + ' -i - -c:v libx264 -s 1280x720 -pix_fmt yuv420p -f flv "' + rtmpUrl + '" >> stream.log 2>&1';
+      cmd = 'phantomjs --web-security=no ' + __dirname + '/scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + fps + ' -i - -c:v libx264 -s 1280x720 -pix_fmt yuv420p -f flv "' + rtmpUrl + '" >> stream.log 2>&1';
       // ^^^^
       // worse tests:
       // cmd = 'phantomjs scraper.js "' + url + '" | ffmpeg -y -c:v png -f image2pipe -r ' + fps + ' -i - -c:v libx264 -profile:v baseline -maxfps 200000 -bufsize 200000 -level 3.1 -pix_fmt yuv420p -f flv "' + rtmpUrl + '" >> stream.log 2>&1';
