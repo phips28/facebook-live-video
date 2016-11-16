@@ -21,6 +21,9 @@ var postId;
 var streamProcess;
 
 function start() {
+  // modify the options object to configure your stream
+  // see: https://developers.facebook.com/docs/graph-api/reference/live-video/#Overview
+  // for parameters,
   // privacy:
   // https://developers.facebook.com/docs/graph-api/reference/v2.8/post
   // 10211042370397464?privacy={'value':'EVERYONE'}
