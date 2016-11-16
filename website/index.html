@@ -170,8 +170,8 @@
                     v5.innerHTML = defaultCount + res.reactions_angry.summary.total_count;
                     v6.innerHTML = defaultCount + res.reactions_wow.summary.total_count;
                 } else {
-                    error.innerHTML = 'AccessToken or PostId (' + postId + ') not set! check your query params';
-                    error.style.display = 'block';
+//                    error.innerHTML = 'AccessToken or PostId (' + postId + ') not set! check your query params';
+//                    error.style.display = 'block';
                 }
             })
         }
@@ -186,11 +186,11 @@
                     callback(JSON.parse(xmlhttp.responseText));
                 }
                 else if (xmlhttp.status == 400) {
-                    console.log('There was an error 400');
+                    console.log('There was an error 400', xmlhttp.responseText);
                     callback({});
                 }
                 else {
-                    console.log('something else other than 200 was returned');
+                    console.log('something else other than 200 was returned', xmlhttp.responseText);
                     callback({});
                 }
             }
