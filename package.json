@@ -22,7 +22,6 @@
   ],
   "dependencies": {
     "bluebird": "^3.4.6",
-    "phantomjs-prebuilt": "^2.1.13",
     "request-promise": "^4.1.1"
   }
 }
