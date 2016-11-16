@@ -76,6 +76,7 @@ for possible parameters.
 ```
 npm start [accessToken] false public
 npm start [accessToken] false friends
+npm start [accessToken] false friends_of_friends
 ```
 Customize your own settings.
 You can find `privacy` settings here: (search for privacy)

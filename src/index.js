@@ -28,7 +28,7 @@ function start() {
   // privacy:
   // https://developers.facebook.com/docs/graph-api/reference/v2.8/post
   // 10211042370397464?privacy={'value':'EVERYONE'}
-  var privacys = { public: "{'value':'EVERYONE'}", friends: "{'value':'FRIENDS'}" };
+  var privacys = { public: "{'value':'EVERYONE'}", friends: "{'value':'ALL_FRIENDS'}", friends_of_friends: "{'value':'FRIENDS_OF_FRIENDS'}" };
   fb.startLiveVideo({
     accessToken,
     title: 'Live Video',
@@ -69,7 +69,7 @@ function start() {
       });
     })
     .catch((error) => {
-      console.error(error.message);
+      console.error(error.message, error.options);
     });
 }
 
