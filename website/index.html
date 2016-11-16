@@ -162,20 +162,43 @@
                     + '?ids=' + postId
                     + '&fields=' + reactions
                     + '&access_token=' + accessToken;
-            $.getJSON(url, function (res) {
+            apiCall(url, function (res) {
                 if (res[postId]) {
-                    v1.text(defaultCount + res[postId].reactions_like.summary.total_count);
-                    v2.text(defaultCount + res[postId].reactions_love.summary.total_count);
-                    v3.text(defaultCount + res[postId].reactions_sad.summary.total_count);
-                    v4.text(defaultCount + res[postId].reactions_haha.summary.total_count);
-                    v5.text(defaultCount + res[postId].reactions_angry.summary.total_count);
-                    v6.text(defaultCount + res[postId].reactions_wow.summary.total_count);
+                    v1.innerHTML = defaultCount + res[postId].reactions_like.summary.total_count;
+                    v2.innerHTML = defaultCount + res[postId].reactions_love.summary.total_count;
+                    v3.innerHTML = defaultCount + res[postId].reactions_sad.summary.total_count;
+                    v4.innerHTML = defaultCount + res[postId].reactions_haha.summary.total_count;
+                    v5.innerHTML = defaultCount + res[postId].reactions_angry.summary.total_count;
+                    v6.innerHTML = defaultCount + res[postId].reactions_wow.summary.total_count;
                 } else {
                     error.innerHTML = 'AccessToken or PostId (' + postId + ') not set! check your query params';
                     error.style.display = 'block';
                 }
             })
         }
+    }
+
+    function apiCall(url, callback) {
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+                if (xmlhttp.status == 200) {
+                    callback(JSON.parse(xmlhttp.responseText));
+                }
+                else if (xmlhttp.status == 400) {
+                    console.log('There was an error 400');
+                    callback({});
+                }
+                else {
+                    console.log('something else other than 200 was returned');
+                    callback({});
+                }
+            }
+        };
+
+        xmlhttp.open('GET', url, true);
+        xmlhttp.send();
     }
 
     function onReady() {
