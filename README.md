@@ -104,7 +104,7 @@ It will increase the numbers every 2 sec by a random number.
 
 ---
 
-If your phantomjs script stuck use to kill every process:
+If your phantomjs script stuck (sometimes it doesnt stop after a ctrl + c) use to kill every process:
 ```
 pkill -f  phantomjs
 ```
@@ -123,7 +123,10 @@ node src/fb.js [accessToken] get_all
 
 # Todo
 
+- [ ] keep ffmpeg stream at 30 fps
 - [ ] configure streaming video with cli params, e.g. stringified JSON
+- [ ] stop process after ~4h (max. fb live video length)
+- [ ] kill phantomjs process properly after the stream ends or main process exits
 - [ ] optimize quality (ffmpeg)
 
 # Contribution
