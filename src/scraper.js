@@ -5,7 +5,7 @@
 var system = require('system');
 var args = system.args;
 var url;
-var fps = 10; // must be the same as in index.js
+var fps = 30; // must be the same as in index.js
 
 if (args[1]) {
   url = args[1];
