@@ -118,101 +118,101 @@
     <p id="error"></p>
 </footer>
 <script>
-    function getParameterByName(name, url) {
-        if (!url) {
-            url = window.location.href;
-        }
-        name = name.replace(/[\[\]]/g, '\\$&');
-        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
     }
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
 
-    var accessToken = getParameterByName('accessToken');
-    var postId = getParameterByName('postId');
-    var debug = getParameterByName('debug') === 'true';
-    var refreshTime = 2; // Refresh time in seconds
-    var defaultCount = 0; // Default count to start with
+  var accessToken = getParameterByName('accessToken');
+  var postId = getParameterByName('postId');
+  var debug = getParameterByName('debug') === 'true';
+  var refreshTime = 2; // Refresh time in seconds
+  var defaultCount = 0; // Default count to start with
 
-    var reactions = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'].map(function (e) {
-        var code = 'reactions_' + e.toLowerCase();
-        return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
-    }).join(',');
+  var reactions = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'].map(function (e) {
+    var code = 'reactions_' + e.toLowerCase();
+    return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+  }).join(',');
 
-    var v1 = document.querySelectorAll('.like .counter')[0],
-            v2 = document.querySelectorAll('.love .counter')[0],
-            v3 = document.querySelectorAll('.sad .counter')[0],
-            v4 = document.querySelectorAll('.haha .counter')[0],
-            v5 = document.querySelectorAll('.angry .counter')[0],
-            v6 = document.querySelectorAll('.shock .counter')[0],
-            error = document.getElementById('error');
+  var v1 = document.querySelectorAll('.like .counter')[0],
+    v2 = document.querySelectorAll('.love .counter')[0],
+    v3 = document.querySelectorAll('.sad .counter')[0],
+    v4 = document.querySelectorAll('.haha .counter')[0],
+    v5 = document.querySelectorAll('.angry .counter')[0],
+    v6 = document.querySelectorAll('.shock .counter')[0],
+    error = document.getElementById('error');
 
-    function refreshCounts() {
-        if (debug) {
-            v1.innerHTML = Number(v1.innerHTML) + Math.floor(Math.random() * 10);
-            v2.innerHTML = Number(v2.innerHTML) + Math.floor(Math.random() * 10);
-            v3.innerHTML = Number(v3.innerHTML) + Math.floor(Math.random() * 10);
-            v4.innerHTML = Number(v4.innerHTML) + Math.floor(Math.random() * 10);
-            v5.innerHTML = Number(v5.innerHTML) + Math.floor(Math.random() * 10);
-            v6.innerHTML = Number(v6.innerHTML) + Math.floor(Math.random() * 10);
+  function refreshCounts() {
+    if (debug) {
+      v1.innerHTML = Number(v1.innerHTML) + Math.floor(Math.random() * 10);
+      v2.innerHTML = Number(v2.innerHTML) + Math.floor(Math.random() * 10);
+      v3.innerHTML = Number(v3.innerHTML) + Math.floor(Math.random() * 10);
+      v4.innerHTML = Number(v4.innerHTML) + Math.floor(Math.random() * 10);
+      v5.innerHTML = Number(v5.innerHTML) + Math.floor(Math.random() * 10);
+      v6.innerHTML = Number(v6.innerHTML) + Math.floor(Math.random() * 10);
+    } else {
+      var url = 'https://graph.facebook.com/v2.8/' + postId
+        + '?fields=' + reactions
+        + '&access_token=' + accessToken;
+      apiCall(url, function (res) {
+        if (res.error) {
+          error.innerHTML = res.error.message;
+          error.style.display = 'block';
         } else {
-            var url = 'https://graph.facebook.com/v2.8/' + postId
-                    + '?fields=' + reactions
-                    + '&access_token=' + accessToken;
-            apiCall(url, function (res) {
-                if (res.error) {
-                    error.innerHTML = res.error.message;
-                    error.style.display = 'block';
-                } else {
-                    v1.innerHTML = defaultCount + res.reactions_like.summary.total_count;
-                    v2.innerHTML = defaultCount + res.reactions_love.summary.total_count;
-                    v3.innerHTML = defaultCount + res.reactions_sad.summary.total_count;
-                    v4.innerHTML = defaultCount + res.reactions_haha.summary.total_count;
-                    v5.innerHTML = defaultCount + res.reactions_angry.summary.total_count;
-                    v6.innerHTML = defaultCount + res.reactions_wow.summary.total_count;
-                }
-            });
+          v1.innerHTML = defaultCount + res.reactions_like.summary.total_count;
+          v2.innerHTML = defaultCount + res.reactions_love.summary.total_count;
+          v3.innerHTML = defaultCount + res.reactions_sad.summary.total_count;
+          v4.innerHTML = defaultCount + res.reactions_haha.summary.total_count;
+          v5.innerHTML = defaultCount + res.reactions_angry.summary.total_count;
+          v6.innerHTML = defaultCount + res.reactions_wow.summary.total_count;
         }
+      });
     }
+  }
 
-    function apiCall(url, callback) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-                try {
-                    var res = JSON.parse(xmlhttp.responseText);
-                } catch (error) {
+  function apiCall(url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+      if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+        try {
+          var res = JSON.parse(xmlhttp.responseText);
+        } catch (error) {
 
-                }
-                if (xmlhttp.status == 200) {
-                    callback(res);
-                }
-                else if (xmlhttp.status == 400) {
-                    console.log('There was an error 400', res);
-                    callback(res);
-                }
-                else {
-                    console.log('something else other than 200 was returned', res);
-                    callback(res);
-                }
-            }
-        };
-        xmlhttp.open('GET', url, true);
-        xmlhttp.send();
-
-    }
-
-    function onReady() {
-        if (debug || (accessToken && postId)) {
-            setInterval(refreshCounts, refreshTime * 1000);
-            refreshCounts();
-        } else {
-            error.innerHTML = 'AccessToken or PostId not set! check your query params';
-            error.style.display = 'block';
         }
+        if (xmlhttp.status == 200) {
+          callback(res);
+        }
+        else if (xmlhttp.status == 400) {
+          console.log('There was an error 400', res);
+          callback(res);
+        }
+        else {
+          console.log('something else other than 200 was returned', res);
+          callback(res);
+        }
+      }
+    };
+    xmlhttp.open('GET', url, true);
+    xmlhttp.send();
+
+  }
+
+  function onReady() {
+    if (debug || (accessToken && postId)) {
+      setInterval(refreshCounts, refreshTime * 1000);
+      refreshCounts();
+    } else {
+      error.innerHTML = 'AccessToken or PostId not set! check your query params';
+      error.style.display = 'block';
     }
+  }
 </script>
 </body>
 </html>
