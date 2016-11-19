@@ -123,7 +123,7 @@ node src/fb.js [accessToken] get_all
 
 # Todo
 
-- [ ] keep ffmpeg stream at 30 fps
+- [x] keep ffmpeg stream at 30 fps
 - [ ] configure streaming video with cli params, e.g. stringified JSON
 - [ ] stop process after ~4h (max. fb live video length)
 - [ ] kill phantomjs process properly after the stream ends or main process exits
