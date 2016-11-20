@@ -206,7 +206,7 @@
 
   function onReady() {
     if (debug) {
-      refreshTime = 1000 / 30 / 1000; // tested a higher change rate of the image (thought ffmpeg would drop not changing images)
+//      refreshTime = 1000 / 30 / 1000; // tested a higher change rate of the image (thought ffmpeg would drop not changing images)
     }
     if (debug || (accessToken && postId)) {
       setInterval(refreshCounts, refreshTime * 1000);
